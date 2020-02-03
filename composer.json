@@ -1,0 +1,22 @@
+{
+    "name": "steezer/steeze-vendor",
+    "description": "The steeze system USES a common development library",
+    "keywords": ["PHPUnit", "slow", "profile"],
+    "homepage": "https://github.com/steezer/steeze-vendor",
+    "type": "library",
+    "license": "Apache2",
+    "authors": [
+        {
+            "name": "XieChunping",
+            "email": "spring.wind2006@163.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6"
+    },
+    "autoload": {
+        "psr-0": {
+            "Vendor": "src/"
+        }
+    }
+}
