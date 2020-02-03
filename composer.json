@@ -4,7 +4,7 @@
     "keywords": ["PHPUnit", "slow", "profile"],
     "homepage": "https://github.com/steezer/steeze-vendor",
     "type": "library",
-    "license": "Apache2",
+    "license": "MIT",
     "authors": [
         {
             "name": "XieChunping",
