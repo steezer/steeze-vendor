@@ -428,6 +428,22 @@ class UploadService
         $info['is_thumb']=$isThumb ? 1 : 0;
         $info['store_type']=$this->type;
         $info['md5'] = md5_file($tmpFilePath);
+        if($isImage){
+            $imageInfo = getimagesize($tmpFilePath);
+            if($imageInfo){
+                $imageTypes=[
+                    '','GIF', 'JPG','PNG','SWF','PSD','BMP','TIFF','TIFF',
+                    'JPC','JP2', 'JPX','JB2','SWC','IFF','WBMP','XBM'
+                ];
+                $imageType=$imageInfo[2];
+                $info['image_width']=$imageInfo[0];
+                $info['image_height']=$imageInfo[1];
+                $info['image_type']=isset($imageTypes[$imageType]) ? $imageTypes[$imageType] : '';
+                $info['image_bits']=isset($imageInfo['bits']) ? $imageInfo['bits'] : -1;
+                $info['image_channels']=isset($imageInfo['channels']) ? $imageInfo['channels'] : -1;
+                $info['image_mime']=isset($imageInfo['mime']) ? $imageInfo['mime'] : '';
+            }
+        }
         
         // 相关路径
         $path = $info['path'];
