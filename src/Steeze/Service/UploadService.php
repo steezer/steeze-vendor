@@ -72,6 +72,28 @@ class UploadService
             }
         }
     }
+    
+    /**
+     * 获取文件扩展名
+     *
+     * @param array|string $file
+     */
+    public static function getFileExtname($file, $default='jpg')
+    {
+        if(is_string($file)){
+            return fileext($file, $default);
+        }
+        
+        $ext = fileext($file['name'], '_');
+        if($ext=='_'){
+            $mimetypes=C('mimetype.*');
+            $ext=array_search($file['type'], $mimetypes);
+            if($ext===false){
+                return $default;
+            }
+        }
+        return $ext;
+    }
 
     /**
      * 设置上传配置
@@ -145,10 +167,7 @@ class UploadService
         if($isLocalFile){
             $ext = fileext($name);
         }else{
-            $ext = fileext($name, '_');
-            if($ext=='_'){
-                $ext=explode('/', $file['type'])[1];
-            }
+            $ext = self::getFileExtname($file);
         }
         // 文件类型检查
         if (!$this->check($ext, 'ext')) {
@@ -206,7 +225,12 @@ class UploadService
      */
     public function base64(&$data)
     {
-        $ext = strtolower(substr($data, 11, strpos($data, ',') - 18));
+        $mimeType=substr($data, strpos($data, ':')+1, strpos($data, ';')-strpos($data, ':')-1);
+        $mimetypes=C('mimetype.*');
+        $ext=array_search($mimeType, $mimetypes);
+        if($ext===false){
+            $ext='jpg';
+        }
         //文件类型检查
         if (!$this->check($ext, 'ext')) {
             throw new Exception(L('File extension not allowed for upload'), self::STATUS_NOT_ALLOW_EXT);
