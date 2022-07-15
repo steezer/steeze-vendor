@@ -142,7 +142,14 @@ class UploadService
         $isLocalFile = !is_array($file);
         $size = $isLocalFile ? filesize($file) : $file['size'];
         $name = basename($isLocalFile ? $file : $file['name']);
-        $ext = fileext($name);
+        if($isLocalFile){
+            $ext = fileext($name);
+        }else{
+            $ext = fileext($name, '_');
+            if($ext=='_'){
+                $ext=explode('/', $file['type'])[1];
+            }
+        }
         // 文件类型检查
         if (!$this->check($ext, 'ext')) {
             throw new Exception(L('File extension not allowed for upload'), self::STATUS_NOT_ALLOW_EXT);
